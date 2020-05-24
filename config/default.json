@@ -1,6 +1,5 @@
 {
   "mongoURI": "mongodb+srv://abhudaym:Sambisambi1!@cluster0-4rlvv.mongodb.net/test?retryWrites=true&w=majority",
   "jwtSecret": "my secret token",
-  "githubClientId": "f7455e2a56a49191824b",
-  "githubSecret": "1f304d1f94f380bddaf5d0ce19bdc3e4fdc4e9e9"
+  "githubToken": "e7ef8e34bea89151eaa211e38c504791adb918baxw"
 }
