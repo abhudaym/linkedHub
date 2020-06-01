@@ -5,6 +5,9 @@ import {
   REGISTER_FAIL,
   USER_LOADED,
   AUTH_ERROR,
+  LOGIN_SUCCESS,
+  LOGIN_FAIL,
+  LOGOUT,
 } from './types';
 import setAuthToken from '../utils/setAuthToken';
 
@@ -33,6 +36,7 @@ export const register = ({ name, email, password }) => async (dispatch) => {
   try {
     const res = await axios.post('/api/users', body, config);
     dispatch({ type: REGISTER_SUCCESS, payload: res.data });
+    dispatch(loadUser());
   } catch (error) {
     const errors = error.response.data.errors;
 
@@ -41,4 +45,41 @@ export const register = ({ name, email, password }) => async (dispatch) => {
     }
     dispatch({ type: REGISTER_FAIL });
   }
+};
+
+// Login User
+export const login = (email, password) => async (dispatch) => {
+  var i = 0;
+  const config = {
+    headers: { 'Content-Type': 'application/json' },
+  };
+  const body = JSON.stringify({ email, password });
+  try {
+    const res = await axios.post('/api/auth', body, config);
+    dispatch({ type: LOGIN_SUCCESS, payload: res.data });
+    dispatch(loadUser());
+  } catch (error) {
+    const errors = error.response.data.errors;
+    console.log(errors);
+    if (errors !== 'Invalid Credentials') {
+      for (i = 0; i < errors.length; i++) {
+        console.log(errors[i].msg);
+        dispatch(setAlert(errors[i].msg, 'danger'));
+      }
+    }
+
+    if (errors === 'Invalid Credentials') {
+      dispatch(setAlert(errors, 'danger'));
+    }
+
+    // if (errors) {
+    //   errors.forEach((errors) => dispatch(setAlert(errors, 'danger')));
+    // }
+    dispatch({ type: LOGIN_FAIL });
+  }
+};
+
+// Logout User
+export const logout = () => (dispatch) => {
+  dispatch({ type: LOGOUT });
 };
