@@ -1,14 +1,19 @@
 import axios from 'axios';
 import { setAlert } from './alert';
 
-import { GET_PROFILE, PROFILE_ERROR, UPDATE_PROFILE } from './types';
+import {
+  GET_PROFILE,
+  PROFILE_ERROR,
+  UPDATE_PROFILE,
+  DELETE_ACCOUNT,
+  CLEAR_PROFILE,
+} from './types';
 
 // Get current users profile => /api/profile/me
 
 export const getCurrentProfile = () => async (dispatch) => {
   try {
     const res = await axios.get('/api/profile/me');
-    console.log(res.data);
     dispatch({
       type: GET_PROFILE,
       payload: res.data,
@@ -137,5 +142,63 @@ export const addEducation = (formData, history) => async (dispatch) => {
         status: error.response.status,
       },
     });
+  }
+};
+
+// Delete experience api/profile/experience/:exp_id
+export const deleteExperience = (id) => async (dispatch) => {
+  try {
+    const res = await axios.delete(`/api/profile/experience/${id}`);
+
+    dispatch({ type: UPDATE_PROFILE, payload: res.data });
+    dispatch(setAlert('Experience field has been deleted!', 'danger'));
+  } catch (error) {
+    dispatch({
+      type: PROFILE_ERROR,
+      payload: {
+        msg: error.response.statusText,
+        status: error.response.status,
+      },
+    });
+  }
+};
+
+// Delete education api/profile/experience/:exp_id
+export const deleteEducation = (id) => async (dispatch) => {
+  try {
+    const res = await axios.delete(`/api/profile/education/${id}`);
+
+    dispatch({ type: UPDATE_PROFILE, payload: res.data });
+    dispatch(setAlert('Education field has been deleted!', 'danger'));
+  } catch (error) {
+    dispatch({
+      type: PROFILE_ERROR,
+      payload: {
+        msg: error.response.statusText,
+        status: error.response.status,
+      },
+    });
+  }
+};
+
+// Delete account and profileFields
+export const deleteAccount = () => async (dispatch) => {
+  if (window.confirm('Are you sure? This can not be undone!')) {
+    try {
+      const res = await axios.delete('/api/profile');
+
+      dispatch({ type: CLEAR_PROFILE });
+      dispatch({ type: DELETE_ACCOUNT });
+
+      dispatch(setAlert('Your account has been deleted!', 'danger'));
+    } catch (error) {
+      dispatch({
+        type: PROFILE_ERROR,
+        payload: {
+          msg: error.response.statusText,
+          status: error.response.status,
+        },
+      });
+    }
   }
 };

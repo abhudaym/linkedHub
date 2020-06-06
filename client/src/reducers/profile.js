@@ -42,6 +42,7 @@ export default function (state = initialState, action) {
         profile: payload,
         loading: false,
       };
+
     default:
       return state;
   }
