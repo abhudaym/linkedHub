@@ -1,5 +1,0 @@
-{
-  "mongoURI": "mongodb+srv://abhudaym:Sambisambi1!@cluster0-4rlvv.mongodb.net/test?retryWrites=true&w=majority",
-  "jwtSecret": "my secret token",
-  "githubToken": "e7ef8e34bea89151eaa211e38c504791adb918baxw"
-}
