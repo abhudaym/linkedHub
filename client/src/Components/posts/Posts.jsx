@@ -4,8 +4,9 @@ import { connect } from 'react-redux';
 import { getPosts } from '../../actions/post';
 import Spinner from '../Layout/Spinner';
 import Moment from 'react-moment';
+import { addLike, removeLike } from '../../actions/post';
 
-const Posts = ({ getPosts, post: { posts, loading }, auth }) => {
+const Posts = ({ getPosts, post: { posts, loading }, auth, addLike, removeLike }) => {
   useEffect(() => {
     getPosts();
   }, [getPosts]);
@@ -34,12 +35,12 @@ const Posts = ({ getPosts, post: { posts, loading }, auth }) => {
                   <p className='post-date'>
                     Posted on <Moment format='DD/MM/YYYY'>{post.date}</Moment>
                   </p>
-                  <button type='button' className='btn btn-light'>
+                  <button onClick={e => addLike(post._id)} type='button' className='btn btn-light'>
                     <i className='fas fa-thumbs-up'></i>
                     <span> {post.likes.length} 
                     </span>
                   </button>
-                  <button type='button' className='btn btn-light'>
+                  <button onClick={e => removeLike(post._id)} type='button' className='btn btn-light'>
                     <i className='fas fa-thumbs-down'></i>
                   </button>
                   <a href={`/post/${post._id}`} className='btn btn-primary'>
@@ -70,4 +71,4 @@ const mapStateToProps = (state) => ({
   auth: state.auth,
 });
 
-export default connect(mapStateToProps, { getPosts })(Posts);
+export default connect(mapStateToProps, { getPosts, addLike, removeLike })(Posts);
