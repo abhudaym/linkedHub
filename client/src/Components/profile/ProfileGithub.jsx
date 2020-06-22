@@ -1,30 +1,61 @@
-import React, {useEffect} from 'react'
-import PropTypes from 'prop-types'
-import { connect } from 'react-redux'
-import Spinner from '../Layout/Spinner'
-import {getGithubRepos} from '../../actions/profile';
+import React, { useEffect } from 'react';
+import PropTypes from 'prop-types';
+import { connect } from 'react-redux';
+import Spinner from '../Layout/Spinner';
+import { getGithubRepos } from '../../actions/profile';
 
-const ProfileGithub = ({username, getGithubRepos, repos}) => {
+const ProfileGithub = ({ username, getGithubRepos, repos }) => {
+  useEffect(() => {
+    getGithubRepos(username);
+  }, [getGithubRepos]);
 
-    useEffect(() => {
-        getGithubRepos(username);
-    }, [getGithubRepos(username)]);
-    
-    return (
-        <div>
-            
-        </div>
-    )
-}
+  return (
+    <div className='profile-github'>
+      <h2 className='text-primary my-1'>Github Repos</h2>
+      {repos === null ? (
+        <Spinner />
+      ) : (
+        repos.map((repo) => (
+          <div className='repo bg-white my-1 p-1' key={repo._id}>
+            <div>
+              <h4>
+                <a
+                  href={repo.html_url}
+                  target='_blank'
+                  rel='noopener noreferrer'>
+                  {repo.name}
+                </a>
+                <p>{repo.description}</p>
+              </h4>
+            </div>
+            <div>
+                <ul>
+                    <li className="badge badge-primary">
+                        Stars: {repo.stargazers_count}
+                    </li>
+                    <li className="badge badge-dark">
+                        Watchers: {repo.watchers_count}
+                    </li>
+                    <li className="badge badge-lite">
+                        Forks: {repo.forks_count}
+                    </li>
+                </ul>
+            </div>
+          </div>
+        ))
+      )}
+    </div>
+  );
+};
 
 ProfileGithub.propTypes = {
-    getGithubRepos: PropTypes.func.isRequired,
-    repos: PropTypes.array.isRequired,
-    username: PropTypes.string.isRequired,
-}
+  getGithubRepos: PropTypes.func.isRequired,
+  repos: PropTypes.array.isRequired,
+  username: PropTypes.string.isRequired,
+};
 
-const mapStateToProps = state => ({
-    repos: state.profile.repos
-})
+const mapStateToProps = (state) => ({
+  repos: state.profile.repos,
+});
 
-export default connect(mapStateToProps, {getGithubRepos})(ProfileGithub)
+export default connect(mapStateToProps, { getGithubRepos })(ProfileGithub);
