@@ -11,7 +11,7 @@ const Landing = ({ isAuthenticated }) => {
     <section className='landing'>
       <div className='dark-overlay'>
         <div className='landing-inner'>
-          <h1 className='x-large'>Developer Connector</h1>
+          <h1 className='x-large'>LinkedHub</h1>
           <p className='lead'>
             Create a developer profile/portfolio, share posts and get help from
             other developers
@@ -24,6 +24,7 @@ const Landing = ({ isAuthenticated }) => {
               Login
             </Link>
           </div>
+          <footer>Developed with ❤️by <a href='https:www.linkedin.com/in/abhudaym'>Abhuday Mishra</a></footer>
         </div>
       </div>
     </section>
